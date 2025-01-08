@@ -1,0 +1,37 @@
+{
+    "name": "devtheorem/handlebars.php",
+    "description": "Parse and render Handlebars templates with PHP.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Theodore Brown",
+            "email": "theodorejb@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "require-dev": {
+        "jbboehr/handlebars-spec": "dev-master",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "DevTheorem\\Handlebars\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DevTheorem\\Handlebars\\Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "analyze": "phpstan analyze src --level 10",
+        "test": "vendor/bin/phpunit test"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
