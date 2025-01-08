@@ -28,7 +28,7 @@
         }
     },
     "scripts": {
-        "analyze": "phpstan analyze src --level 10",
+        "analyze": "phpstan analyze --level 10 src test",
         "test": "vendor/bin/phpunit test"
     },
     "config": {

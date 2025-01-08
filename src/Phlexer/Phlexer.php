@@ -49,6 +49,7 @@ abstract class Phlexer
             return null;
         }
 
+        $line = substr_count($this->text, "\n", 0, $this->cursor + 1) + 1;
         $subject = substr($this->text, $this->cursor);
 
         foreach ($this->rules as $rule) {
@@ -66,7 +67,7 @@ abstract class Phlexer
                     return $this->getNextToken();
                 }
 
-                return new Token($tokenName, $this->yytext);
+                return new Token($tokenName, $this->yytext, $line);
             }
         }
 
