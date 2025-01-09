@@ -9,26 +9,34 @@ abstract class Phlexer
     /**
      * @var string[]
      */
-    private array $states = [self::INITIAL_STATE];
+    private array $states;
     private string $text;
-    private int $cursor = 0;
+    private int $cursor;
 
     /**
      * The current matched value
      */
-    protected string $yytext = '';
+    protected string $yytext;
 
     /**
      * @param Rule[] $rules
      */
     public function __construct(protected array $rules) {}
 
+    public function initialize(string $text): void
+    {
+        $this->states = [self::INITIAL_STATE];
+        $this->text = $text;
+        $this->cursor = 0;
+        $this->yytext = '';
+    }
+
     /**
      * @return Token[]
      */
     public function tokenize(string $text): array
     {
-        $this->text = $text;
+        $this->initialize($text);
         $tokens = [];
 
         while ($token = $this->getNextToken()) {
