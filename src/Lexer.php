@@ -12,6 +12,40 @@ use DevTheorem\Handlebars\Phlexer\Rule;
  */
 final class Lexer extends Phlexer
 {
+    const T_BOOLEAN = 'BOOLEAN';
+    const T_CLOSE = 'CLOSE';
+    const T_CLOSE_ARRAY = 'CLOSE_ARRAY';
+    const T_CLOSE_BLOCK_PARAMS = 'CLOSE_BLOCK_PARAMS';
+    const T_CLOSE_RAW_BLOCK = 'CLOSE_RAW_BLOCK';
+    const T_CLOSE_SEXPR = 'CLOSE_SEXPR';
+    const T_CLOSE_UNESCAPED = 'CLOSE_UNESCAPED';
+    const T_COMMENT = 'COMMENT';
+    const T_CONTENT = 'CONTENT';
+    const T_DATA = 'DATA';
+    const T_END_RAW_BLOCK = 'END_RAW_BLOCK';
+    const T_EOF = 'EOF';
+    const T_EQUALS = 'EQUALS';
+    const T_ID = 'ID';
+    const T_INVALID = 'INVALID';
+    const T_INVERSE = 'INVERSE';
+    const T_NULL = 'NULL';
+    const T_NUMBER = 'NUMBER';
+    const T_OPEN = 'OPEN';
+    const T_OPEN_BLOCK = 'OPEN_BLOCK';
+    const T_OPEN_BLOCK_PARAMS = 'OPEN_BLOCK_PARAMS';
+    const T_OPEN_ENDBLOCK = 'OPEN_ENDBLOCK';
+    const T_OPEN_INVERSE = 'OPEN_INVERSE';
+    const T_OPEN_INVERSE_CHAIN = 'OPEN_INVERSE_CHAIN';
+    const T_OPEN_PARTIAL = 'OPEN_PARTIAL';
+    const T_OPEN_PARTIAL_BLOCK = 'OPEN_PARTIAL_BLOCK';
+    const T_OPEN_RAW_BLOCK = 'OPEN_RAW_BLOCK';
+    const T_OPEN_SEXPR = 'OPEN_SEXPR';
+    const T_OPEN_UNESCAPED = 'OPEN_UNESCAPED';
+    const T_PRIVATE_SEP = 'PRIVATE_SEP';
+    const T_SEP = 'SEP';
+    const T_STRING = 'STRING';
+    const T_UNDEFINED = 'UNDEFINED';
+
     public function __construct()
     {
         $LEFT_STRIP = $RIGHT_STRIP = '~';
@@ -42,42 +76,42 @@ final class Lexer extends Phlexer
                     $this->pushState('mu');
                 }
 
-                return $this->yytext !== '' ? 'CONTENT' : null;
+                return $this->yytext !== '' ? self::T_CONTENT : null;
             }),
 
-            new Rule([], '[^\\x00]+', fn() => 'CONTENT'),
+            new Rule([], '[^\\x00]+', fn() => self::T_CONTENT),
 
             // marks CONTENT up to the next mustache or escaped mustache
             new Rule(['emu'], '[^\\x00]{2,}?(?={{|\\\\{{|\\\\\\\\{{|\\Z)', function () {
                 $this->popState();
-                return 'CONTENT';
+                return self::T_CONTENT;
             }),
 
             // nested raw block will create stacked 'raw' condition
             new Rule(['raw'], '{{{{(?=[^\\/])', function () {
                 $this->pushState('raw');
-                return 'CONTENT';
+                return self::T_CONTENT;
             }),
 
             new Rule(['raw'], '{{{{\\/' . $CTRL_INVERSE . '(?=[=}\\s\\/.])}}}}', function () {
                 $this->popState();
 
                 if ($this->topState() === 'raw') {
-                    return 'CONTENT';
+                    return self::T_CONTENT;
                 } else {
                     $this->strip(5, 9);
-                    return 'END_RAW_BLOCK';
+                    return self::T_END_RAW_BLOCK;
                 }
             }),
-            new Rule(['raw'], '[^\\x00]+?(?={{{{)', fn() => 'CONTENT'),
+            new Rule(['raw'], '[^\\x00]+?(?={{{{)', fn() => self::T_CONTENT),
 
             new Rule(['com'], '[\\s\\S]*?--' . $RIGHT_STRIP . '?}}', function () {
                 $this->popState();
-                return 'COMMENT';
+                return self::T_COMMENT;
             }),
 
-            new Rule(['mu'], '\\(', fn() => 'OPEN_SEXPR'),
-            new Rule(['mu'], '\\)', fn() => 'CLOSE_SEXPR'),
+            new Rule(['mu'], '\\(', fn() => self::T_OPEN_SEXPR),
+            new Rule(['mu'], '\\)', fn() => self::T_CLOSE_SEXPR),
 
             new Rule(['mu'], '\\[', function () {
                 // Assuming yy.syntax.square === 'string'. OPEN_ARRAY option not handled
@@ -86,30 +120,30 @@ final class Lexer extends Phlexer
                 $this->pushState('escl');
                 return null;
             }),
-            new Rule(['mu'], ']', fn() => 'CLOSE_ARRAY'),
+            new Rule(['mu'], ']', fn() => self::T_CLOSE_ARRAY),
 
-            new Rule(['mu'], '{{{{', fn() => 'OPEN_RAW_BLOCK'),
+            new Rule(['mu'], '{{{{', fn() => self::T_OPEN_RAW_BLOCK),
             new Rule(['mu'], '}}}}', function () {
                 $this->popState();
                 $this->pushState('raw');
-                return 'CLOSE_RAW_BLOCK';
+                return self::T_CLOSE_RAW_BLOCK;
             }),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?>', fn() => 'OPEN_PARTIAL'),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?#>', fn() => 'OPEN_PARTIAL_BLOCK'),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?#\\*?', fn() => 'OPEN_BLOCK'),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\/', fn() => 'OPEN_ENDBLOCK'),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?>', fn() => self::T_OPEN_PARTIAL),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?#>', fn() => self::T_OPEN_PARTIAL_BLOCK),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?#\\*?', fn() => self::T_OPEN_BLOCK),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\/', fn() => self::T_OPEN_ENDBLOCK),
             new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\^\\s*' . $RIGHT_STRIP . '?}}', function () {
                 $this->popState();
-                return 'INVERSE';
+                return self::T_INVERSE;
             }),
             new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\s*else\\s*' . $RIGHT_STRIP . '?}}', function () {
                 $this->popState();
-                return 'INVERSE';
+                return self::T_INVERSE;
             }),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\^', fn() => 'OPEN_INVERSE'),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\s*else', fn() => 'OPEN_INVERSE_CHAIN'),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?{', fn() => 'OPEN_UNESCAPED'),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?&', fn() => 'OPEN'),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\^', fn() => self::T_OPEN_INVERSE),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\s*else', fn() => self::T_OPEN_INVERSE_CHAIN),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?{', fn() => self::T_OPEN_UNESCAPED),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?&', fn() => self::T_OPEN),
             new Rule(['mu'], '{{' . $LEFT_STRIP . '?!--', function () {
                 $this->rewind(strlen($this->yytext));
                 $this->popState();
@@ -118,56 +152,56 @@ final class Lexer extends Phlexer
             }),
             new Rule(['mu'], '{{' . $LEFT_STRIP . '?![\\s\\S]*?}}', function () {
                 $this->popState();
-                return 'COMMENT';
+                return self::T_COMMENT;
             }),
-            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\*?', fn() => 'OPEN'),
+            new Rule(['mu'], '{{' . $LEFT_STRIP . '?\\*?', fn() => self::T_OPEN),
 
-            new Rule(['mu'], '=', fn() => 'EQUALS'),
-            new Rule(['mu'], '\\.\\.', fn() => 'ID'),
-            new Rule(['mu'], '\\.(?=' . $LOOKAHEAD . ')', fn() => 'ID'),
-            new Rule(['mu'], '\\.#', fn() => 'PRIVATE_SEP'),
-            new Rule(['mu'], '[\\/.]', fn() => 'SEP'),
+            new Rule(['mu'], '=', fn() => self::T_EQUALS),
+            new Rule(['mu'], '\\.\\.', fn() => self::T_ID),
+            new Rule(['mu'], '\\.(?=' . $LOOKAHEAD . ')', fn() => self::T_ID),
+            new Rule(['mu'], '\\.#', fn() => self::T_PRIVATE_SEP),
+            new Rule(['mu'], '[\\/.]', fn() => self::T_SEP),
             new Rule(['mu'], '\\s+', fn() => null), // ignore whitespace
             new Rule(['mu'], '}' . $RIGHT_STRIP . '?}}', function () {
                 $this->popState();
-                return 'CLOSE_UNESCAPED';
+                return self::T_CLOSE_UNESCAPED;
             }),
             new Rule(['mu'], $RIGHT_STRIP . '?}}', function () {
                 $this->popState();
-                return 'CLOSE';
+                return self::T_CLOSE;
             }),
             // double-quoted string
             new Rule(['mu'], '"(\\\\["]|[^"])*"', function () {
                 $this->strip(1, 2);
                 $this->replace('/\\\\"/', '"');
-                return 'STRING';
+                return self::T_STRING;
             }),
             // single quoted string
             new Rule(['mu'], "'(\\\\[']|[^'])*'", function () {
                 $this->strip(1, 2);
                 $this->replace("/\\\\'/", "'");
-                return 'STRING';
+                return self::T_STRING;
             }),
-            new Rule(['mu'], '@', fn() => 'DATA'),
-            new Rule(['mu'], 'true(?=' . $LITERAL_LOOKAHEAD . ')', fn() => 'BOOLEAN'),
-            new Rule(['mu'], 'false(?=' . $LITERAL_LOOKAHEAD . ')', fn() => 'BOOLEAN'),
-            new Rule(['mu'], 'undefined(?=' . $LITERAL_LOOKAHEAD . ')', fn() => 'UNDEFINED'),
-            new Rule(['mu'], 'null(?=' . $LITERAL_LOOKAHEAD . ')', fn() => 'NULL'),
-            new Rule(['mu'], '\\-?[0-9]+(?:\\.[0-9]+)?(?=' . $LITERAL_LOOKAHEAD . ')', fn() => 'NUMBER'),
-            new Rule(['mu'], 'as\\s+\\|', fn() => 'OPEN_BLOCK_PARAMS'),
-            new Rule(['mu'], '\\|', fn() => 'CLOSE_BLOCK_PARAMS'),
+            new Rule(['mu'], '@', fn() => self::T_DATA),
+            new Rule(['mu'], 'true(?=' . $LITERAL_LOOKAHEAD . ')', fn() => self::T_BOOLEAN),
+            new Rule(['mu'], 'false(?=' . $LITERAL_LOOKAHEAD . ')', fn() => self::T_BOOLEAN),
+            new Rule(['mu'], 'undefined(?=' . $LITERAL_LOOKAHEAD . ')', fn() => self::T_UNDEFINED),
+            new Rule(['mu'], 'null(?=' . $LITERAL_LOOKAHEAD . ')', fn() => self::T_NULL),
+            new Rule(['mu'], '\\-?[0-9]+(?:\\.[0-9]+)?(?=' . $LITERAL_LOOKAHEAD . ')', fn() => self::T_NUMBER),
+            new Rule(['mu'], 'as\\s+\\|', fn() => self::T_OPEN_BLOCK_PARAMS),
+            new Rule(['mu'], '\\|', fn() => self::T_CLOSE_BLOCK_PARAMS),
 
-            new Rule(['mu'], $ID, fn() => 'ID'),
+            new Rule(['mu'], $ID, fn() => self::T_ID),
 
             new Rule(['escl'], '\\[(\\\\\\]|[^\\]])*\\]', function () {
                 $this->replace('/\\\\([\\\\\\]])/', '$1');
                 $this->popState();
-                return 'ID';
+                return self::T_ID;
             }),
 
-            new Rule(['mu'], '.', fn() => 'INVALID'),
+            new Rule(['mu'], '.', fn() => self::T_INVALID),
 
-            new Rule(['INITIAL', 'mu'], '\\Z', fn() => 'EOF'),
+            new Rule(['INITIAL', 'mu'], '\\Z', fn() => self::T_EOF),
         ]);
     }
 
