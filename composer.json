@@ -13,8 +13,9 @@
         "php": ">=8.2"
     },
     "require-dev": {
+        "ircmaxell/php-yacc": "dev-master",
         "jbboehr/handlebars-spec": "dev-master",
-        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan": "^2.1.14",
         "phpunit/phpunit": "^11.5"
     },
     "autoload": {
@@ -28,7 +29,7 @@
         }
     },
     "scripts": {
-        "analyze": "phpstan analyze --level 10 src test",
+        "analyze": "phpstan analyze",
         "test": "vendor/bin/phpunit test"
     },
     "config": {

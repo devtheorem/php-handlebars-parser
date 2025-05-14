@@ -32,7 +32,7 @@ abstract class Phlexer
     }
 
     /**
-     * @return Token[]
+     * @return list<Token>
      */
     public function tokenize(string $text): array
     {

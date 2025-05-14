@@ -4,9 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92891e64d8605c4734e682361a5857a9",
+    "content-hash": "b80bd6d01301d011ed93e22e540a10c2",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "ircmaxell/php-yacc",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/PHP-Yacc.git",
+                "reference": "b06f033225fec62f8fdd4631b1f33008e6c180b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/PHP-Yacc/zipball/b06f033225fec62f8fdd4631b1f33008e6c180b5",
+                "reference": "b06f033225fec62f8fdd4631b1f33008e6c180b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.65",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^10.5"
+            },
+            "default-branch": true,
+            "bin": [
+                "bin/phpyacc"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/functions.php"
+                ],
+                "psr-4": {
+                    "PhpYacc\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@php.net"
+                }
+            ],
+            "description": "A PHP YACC Parser-Generator library",
+            "support": {
+                "issues": "https://github.com/ircmaxell/PHP-Yacc/issues",
+                "source": "https://github.com/ircmaxell/PHP-Yacc/tree/master"
+            },
+            "time": "2024-12-27T14:49:29+00:00"
+        },
         {
             "name": "jbboehr/handlebars-spec",
             "version": "dev-master",
@@ -283,16 +335,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.1",
+            "version": "2.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "cd6e973e04b4c2b94c86e8612b5a65f0da0e08e7"
+                "reference": "8f2e03099cac24ff3b379864d171c5acbfc6b9a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/cd6e973e04b4c2b94c86e8612b5a65f0da0e08e7",
-                "reference": "cd6e973e04b4c2b94c86e8612b5a65f0da0e08e7",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8f2e03099cac24ff3b379864d171c5acbfc6b9a2",
+                "reference": "8f2e03099cac24ff3b379864d171c5acbfc6b9a2",
                 "shasum": ""
             },
             "require": {
@@ -337,7 +389,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-05T16:43:48+00:00"
+            "time": "2025-05-02T15:32:28+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1792,6 +1844,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "ircmaxell/php-yacc": 20,
         "jbboehr/handlebars-spec": 20
     },
     "prefer-stable": false,
