@@ -1,5 +1,5 @@
 {
-    "name": "devtheorem/handlebars-parser",
+    "name": "devtheorem/php-handlebars-parser",
     "description": "Parse Handlebars templates to a spec-compliant AST with PHP.",
     "keywords": [
         "Handlebars",

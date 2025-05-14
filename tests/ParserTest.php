@@ -3,8 +3,7 @@
 namespace DevTheorem\HandlebarsParser\Test;
 
 use DevTheorem\HandlebarsParser\Ast\Program;
-use DevTheorem\HandlebarsParser\Lexer;
-use DevTheorem\HandlebarsParser\Parser;
+use DevTheorem\HandlebarsParser\ParserFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +36,7 @@ class ParserTest extends TestCase
     #[DataProvider("jsonSpecProvider")]
     public function testSpecs(array $spec): void
     {
-        $parser = new Parser(new Lexer());
+        $parser = (new ParserFactory())->create();
 
         try {
             $result = $parser->parse($spec['template']);

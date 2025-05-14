@@ -1,14 +1,25 @@
-# handlebars.php
+# PHP Handlebars Parser
 
-Parse and render [Handlebars](https://handlebarsjs.com) templates with PHP.
+Parse [Handlebars](https://handlebarsjs.com) templates to a spec-compliant AST with PHP.
 
 ## Installation
 
-`composer require devtheorem/handlebars.php`
+`composer require devtheorem/php-handlebars-parser`
 
 ## Usage
 
-Todo
+```php
+use DevTheorem\HandlebarsParser\ParserFactory;
+
+$parser = (new ParserFactory())->create();
+
+$template = "Hello {{name}}!";
+
+$result = $parser->parse($template);
+```
+
+If the template contains invalid syntax, an exception will be thrown.
+Otherwise, `$result` will contain a `DevTheorem\HandlebarsParser\Ast\Program` instance.
 
 ## Author
 
