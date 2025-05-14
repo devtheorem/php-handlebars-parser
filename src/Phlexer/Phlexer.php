@@ -4,7 +4,7 @@ namespace DevTheorem\HandlebarsParser\Phlexer;
 
 abstract class Phlexer
 {
-    const INITIAL_STATE = 'INITIAL';
+    public const INITIAL_STATE = 'INITIAL';
 
     /**
      * @var string[]

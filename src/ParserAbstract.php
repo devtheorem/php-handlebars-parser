@@ -208,7 +208,7 @@ abstract class ParserAbstract
 
         $this->errorState = 0;
 
-        for (;;) {
+        for (; ;) {
             if ($this->actionBase[$state] === 0) {
                 $rule = $this->actionDefault[$state];
             } else {
@@ -221,7 +221,8 @@ abstract class ParserAbstract
                     if (!isset($this->tokenMap[$tokenName])) {
                         throw new \RangeException(sprintf(
                             'The lexer returned an invalid token (name=%s, value=%s)',
-                            $tokenName, $tokenValue,
+                            $tokenName,
+                            $tokenValue,
                         ));
                     }
                     $symbol = $this->tokenMap[$tokenName];
@@ -269,7 +270,7 @@ abstract class ParserAbstract
                 }
             }
 
-            for (;;) {
+            for (; ;) {
                 if ($rule === 0) {
                     /* accept */
                     //$this->traceAccept();
@@ -313,7 +314,6 @@ abstract class ParserAbstract
                             $token = $this->tokens[$this->tokenPos];
                             throw new \Exception($this->getErrorMessage($symbol, $state, $token->line));
                             // Break missing intentionally
-                            // no break
                         case 1:
                         case 2:
                             $this->errorState = 3;
@@ -374,7 +374,8 @@ abstract class ParserAbstract
      *
      * @return string Formatted error message
      */
-    protected function getErrorMessage(int $symbol, int $state, int $line): string {
+    protected function getErrorMessage(int $symbol, int $state, int $line): string
+    {
         $expectedString = '';
         if ($expected = $this->getExpectedTokens($state)) {
             $expectedString = ': Expecting ' . implode(' or ', $expected);
@@ -388,7 +389,8 @@ abstract class ParserAbstract
      *
      * @return string[] Expected tokens. If too many, an empty array is returned.
      */
-    protected function getExpectedTokens(int $state): array {
+    protected function getExpectedTokens(int $state): array
+    {
         $expected = [];
 
         $base = $this->actionBase[$state];
@@ -422,7 +424,8 @@ abstract class ParserAbstract
      *
      * @return array<string, int>
      */
-    protected function createTokenMap(): array {
+    protected function createTokenMap(): array
+    {
         $tokenMap = ['EOF' => 0]; // for sentinel token
 
         foreach ($this->symbolToName as $name) {
@@ -547,7 +550,7 @@ abstract class ParserAbstract
      * @param Expression[] $params
      */
     protected function prepareMustache(
-        PathExpression | Literal $path,
+        PathExpression|Literal $path,
         array $params,
         ?Hash $hash,
         string $open,
@@ -569,7 +572,7 @@ abstract class ParserAbstract
         );
     }
 
-    private function validateClose(OpenHelper $open, CloseBlock | string $close): void
+    private function validateClose(OpenHelper $open, CloseBlock|string $close): void
     {
         if ($close instanceof CloseBlock) {
             $close = $close->path->original;
@@ -583,7 +586,7 @@ abstract class ParserAbstract
     /**
      * @param PathSegment[] $parts
      */
-    protected function preparePath(bool $data, SubExpression | null $sexpr, array $parts, SourceLocation $loc): PathExpression
+    protected function preparePath(bool $data, SubExpression|null $sexpr, array $parts, SourceLocation $loc): PathExpression
     {
         if ($data) {
             $original = '@';
@@ -608,7 +611,7 @@ abstract class ParserAbstract
             if (!$isLiteral && ($part === '..' || $part === '.' || $part === 'this')) {
                 if (count($tail) > 0) {
                     throw new \Exception('Invalid path: ' . $original);
-                } else if ($part === '..') {
+                } elseif ($part === '..') {
                     $depth++;
                 }
             } else {
@@ -657,7 +660,7 @@ abstract class ParserAbstract
         OpenBlock $openBlock,
         Program $program,
         ?InverseChain $inverseAndProgram,
-        CloseBlock | InverseChain | null $close,
+        CloseBlock|InverseChain|null $close,
         bool $inverted,
         SourceLocation $loc,
     ): BlockStatement {

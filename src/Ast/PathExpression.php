@@ -12,7 +12,7 @@ class PathExpression extends Expression
         public bool $this_,
         public bool $data,
         public int $depth,
-        public SubExpression | string $head,
+        public SubExpression|string $head,
         public array $tail,
         public array $parts,
         public string $original,

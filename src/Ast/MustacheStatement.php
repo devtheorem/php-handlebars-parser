@@ -9,7 +9,7 @@ class MustacheStatement extends Statement
      */
     public function __construct(
         string $type,
-        public PathExpression | Literal $path,
+        public PathExpression|Literal $path,
         public array $params,
         public ?Hash $hash,
         public bool $escaped,
