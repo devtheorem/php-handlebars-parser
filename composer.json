@@ -25,12 +25,12 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DevTheorem\\Handlebars\\Test\\": "test/"
+            "DevTheorem\\Handlebars\\Test\\": "tests/"
         }
     },
     "scripts": {
         "analyze": "phpstan analyze",
-        "test": "vendor/bin/phpunit test"
+        "test": "vendor/bin/phpunit tests"
     },
     "config": {
         "sort-packages": true
