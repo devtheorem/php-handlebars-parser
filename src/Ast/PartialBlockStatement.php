@@ -8,7 +8,7 @@ class PartialBlockStatement extends Statement
      * @param Expression[] $params
      */
     public function __construct(
-        public PathExpression|SubExpression $name,
+        public PathExpression|Literal $name,
         public array $params,
         public ?Hash $hash,
         public Program $program,

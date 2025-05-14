@@ -314,8 +314,8 @@ helperName:
   | STRING { $$ = new StringLiteral($1, $1, locInfo()); }
   | NUMBER { $$ = new NumberLiteral($1 + 0, $1 + 0, locInfo()); }
   | BOOLEAN { $$ = new BooleanLiteral($1 === 'true', $1 === 'true', locInfo()); }
-  | UNDEFINED { $$ = new UndefinedLiteral(locInfo()); }
-  | NULL { $$ = new NullLiteral(locInfo()); }
+  | UNDEFINED { $$ = new UndefinedLiteral(null, null, locInfo()); }
+  | NULL { $$ = new NullLiteral(null, null, locInfo()); }
 ;
 
 dataName:

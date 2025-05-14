@@ -14,20 +14,41 @@ use PHPUnit\Framework\TestCase;
 class ParserTest extends TestCase
 {
     /**
-     * @return list<array{0: SpecArr}>
+     * @return \Generator<array{0: SpecArr}>
      */
-    public static function jsonSpecProvider(): array
+    public static function jsonSpecProvider(): \Generator
     {
-        $filename = 'vendor/jbboehr/handlebars-spec/spec/parser.json';
-        $contents = file_get_contents($filename);
+        $files = [
+            'basic',
+            'blocks',
+            'builtins',
+            'data',
+            'helpers',
+            'parser',
+            'partials',
+            'regressions',
+            'strict',
+            'string-params',
+            'subexpressions',
+            'track-ids',
+            'whitespace-control',
+        ];
 
-        if ($contents === false) {
-            throw new \Exception("Failed to read file {$filename}");
+        foreach ($files as $file) {
+            $filename = "vendor/jbboehr/handlebars-spec/spec/{$file}.json";
+            $contents = file_get_contents($filename);
+
+            if ($contents === false) {
+                throw new \Exception("Failed to read file {$filename}");
+            }
+
+            /** @var list<SpecArr> $json */
+            $json = json_decode($contents, true);
+
+            foreach ($json as $spec) {
+                yield [$spec];
+            }
         }
-
-        /** @var list<SpecArr> $json */
-        $json = json_decode($contents, true);
-        return array_map(fn(array $d): array => [$d], $json);
     }
 
     /**
@@ -44,11 +65,14 @@ class ParserTest extends TestCase
         } catch (\Exception $e) {
             if (isset($spec['exception'])) {
                 if (is_string($spec['exception'])) {
-                    $this->assertMatchesRegularExpression($spec['exception'], $e->getMessage());
+                    if (str_starts_with($spec['exception'], '/')) {
+                        $this->assertMatchesRegularExpression($spec['exception'], $e->getMessage());
+                    } else {
+                        $this->assertStringContainsString($e->getMessage(), $spec['exception']);
+                    }
                 } else {
                     $this->assertNotEmpty($e->getMessage());
                 }
-
             } else {
                 $this->fail("Unexpected exception: {$e->getMessage()}");
             }

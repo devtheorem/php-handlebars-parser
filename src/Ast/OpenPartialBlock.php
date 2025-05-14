@@ -8,7 +8,7 @@ readonly class OpenPartialBlock extends OpenHelper
      * @param Expression[] $params
      */
     public function __construct(
-        PathExpression $path,
+        PathExpression|Literal $path,
         array $params,
         ?Hash $hash,
         public StripFlags $strip,

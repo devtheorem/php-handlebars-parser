@@ -9,7 +9,7 @@ class BlockStatement extends Statement
      */
     public function __construct(
         string $type,
-        public PathExpression $path,
+        public PathExpression|Literal $path,
         public array $params,
         public ?Hash $hash,
         public ?Program $program,

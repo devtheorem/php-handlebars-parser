@@ -6,9 +6,9 @@ class BooleanLiteral extends Literal
 {
     public function __construct(
         public bool $value,
-        public bool $original,
+        bool $original,
         SourceLocation $loc,
     ) {
-        parent::__construct('BooleanLiteral', $loc);
+        parent::__construct($original, 'BooleanLiteral', $loc);
     }
 }

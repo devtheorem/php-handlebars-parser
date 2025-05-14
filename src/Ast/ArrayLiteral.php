@@ -2,7 +2,7 @@
 
 namespace DevTheorem\HandlebarsParser\Ast;
 
-class ArrayLiteral extends Literal
+class ArrayLiteral extends Expression
 {
     /**
      * @param Expression[] $items

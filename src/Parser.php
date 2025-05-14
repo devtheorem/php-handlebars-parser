@@ -544,10 +544,10 @@ class Parser extends ParserAbstract
                  $self->semValue = new BooleanLiteral($self->semStack[$stackPos-(1-1)] === 'true', $self->semStack[$stackPos-(1-1)] === 'true', $self->locInfo($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); 
             },
             60 => static function ($self, $stackPos) {
-                 $self->semValue = new UndefinedLiteral($self->locInfo($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); 
+                 $self->semValue = new UndefinedLiteral(null, null, $self->locInfo($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); 
             },
             61 => static function ($self, $stackPos) {
-                 $self->semValue = new NullLiteral($self->locInfo($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); 
+                 $self->semValue = new NullLiteral(null, null, $self->locInfo($self->tokenStartStack[$stackPos-(1-1)], $self->tokenEndStack[$stackPos])); 
             },
             62 => static function ($self, $stackPos) {
                 

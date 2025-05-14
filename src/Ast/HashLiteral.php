@@ -2,7 +2,7 @@
 
 namespace DevTheorem\HandlebarsParser\Ast;
 
-class HashLiteral extends Literal
+class HashLiteral extends Expression
 {
     /**
      * @param HashPair[] $pairs

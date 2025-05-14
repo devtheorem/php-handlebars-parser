@@ -10,7 +10,7 @@ readonly class OpenBlock extends OpenHelper
      */
     public function __construct(
         public string $open,
-        PathExpression $path,
+        PathExpression|Literal $path,
         array $params,
         ?Hash $hash,
         public array $blockParams,

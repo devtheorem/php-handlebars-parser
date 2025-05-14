@@ -8,7 +8,7 @@ readonly class OpenHelper
      * @param Expression[] $params
      */
     public function __construct(
-        public PathExpression $path,
+        public PathExpression|Literal $path,
         public array $params,
         public ?Hash $hash,
     ) {}
