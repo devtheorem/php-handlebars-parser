@@ -1,6 +1,6 @@
 <?php
 
-namespace DevTheorem\Handlebars\Ast;
+namespace DevTheorem\HandlebarsParser\Ast;
 
 class ContentStatement extends Statement
 {

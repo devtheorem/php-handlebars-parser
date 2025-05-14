@@ -1,6 +1,6 @@
 <?php
 
-namespace DevTheorem\Handlebars\Phlexer;
+namespace DevTheorem\HandlebarsParser\Phlexer;
 
 readonly class Token
 {

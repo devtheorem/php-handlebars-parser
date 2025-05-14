@@ -1,10 +1,10 @@
 <?php
 
-namespace DevTheorem\Handlebars\Test;
+namespace DevTheorem\HandlebarsParser\Test;
 
-use DevTheorem\Handlebars\Ast\Program;
-use DevTheorem\Handlebars\Lexer;
-use DevTheorem\Handlebars\Parser;
+use DevTheorem\HandlebarsParser\Ast\Program;
+use DevTheorem\HandlebarsParser\Lexer;
+use DevTheorem\HandlebarsParser\Parser;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

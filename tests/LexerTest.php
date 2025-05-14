@@ -1,9 +1,9 @@
 <?php
 
-namespace DevTheorem\Handlebars\Test;
+namespace DevTheorem\HandlebarsParser\Test;
 
-use DevTheorem\Handlebars\Lexer;
-use DevTheorem\Handlebars\Phlexer\Token;
+use DevTheorem\HandlebarsParser\Lexer;
+use DevTheorem\HandlebarsParser\Phlexer\Token;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

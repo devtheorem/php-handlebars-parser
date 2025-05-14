@@ -1,6 +1,6 @@
 <?php
 
-namespace DevTheorem\Handlebars;
+namespace DevTheorem\HandlebarsParser;
 
 /*
  * This parser is based on code from Nikita Popov,
@@ -8,27 +8,27 @@ namespace DevTheorem\Handlebars;
  * which in turn is based on work by Masato Bito.
  */
 
-use DevTheorem\Handlebars\Ast\BlockStatement;
-use DevTheorem\Handlebars\Ast\CloseBlock;
-use DevTheorem\Handlebars\Ast\ContentStatement;
-use DevTheorem\Handlebars\Ast\Expression;
-use DevTheorem\Handlebars\Ast\Hash;
-use DevTheorem\Handlebars\Ast\InverseChain;
-use DevTheorem\Handlebars\Ast\Literal;
-use DevTheorem\Handlebars\Ast\MustacheStatement;
-use DevTheorem\Handlebars\Ast\OpenBlock;
-use DevTheorem\Handlebars\Ast\OpenHelper;
-use DevTheorem\Handlebars\Ast\OpenPartialBlock;
-use DevTheorem\Handlebars\Ast\PartialBlockStatement;
-use DevTheorem\Handlebars\Ast\PathExpression;
-use DevTheorem\Handlebars\Ast\PathSegment;
-use DevTheorem\Handlebars\Ast\Position;
-use DevTheorem\Handlebars\Ast\Program;
-use DevTheorem\Handlebars\Ast\SourceLocation;
-use DevTheorem\Handlebars\Ast\Statement;
-use DevTheorem\Handlebars\Ast\StripFlags;
-use DevTheorem\Handlebars\Ast\SubExpression;
-use DevTheorem\Handlebars\Phlexer\Token;
+use DevTheorem\HandlebarsParser\Ast\BlockStatement;
+use DevTheorem\HandlebarsParser\Ast\CloseBlock;
+use DevTheorem\HandlebarsParser\Ast\ContentStatement;
+use DevTheorem\HandlebarsParser\Ast\Expression;
+use DevTheorem\HandlebarsParser\Ast\Hash;
+use DevTheorem\HandlebarsParser\Ast\InverseChain;
+use DevTheorem\HandlebarsParser\Ast\Literal;
+use DevTheorem\HandlebarsParser\Ast\MustacheStatement;
+use DevTheorem\HandlebarsParser\Ast\OpenBlock;
+use DevTheorem\HandlebarsParser\Ast\OpenHelper;
+use DevTheorem\HandlebarsParser\Ast\OpenPartialBlock;
+use DevTheorem\HandlebarsParser\Ast\PartialBlockStatement;
+use DevTheorem\HandlebarsParser\Ast\PathExpression;
+use DevTheorem\HandlebarsParser\Ast\PathSegment;
+use DevTheorem\HandlebarsParser\Ast\Position;
+use DevTheorem\HandlebarsParser\Ast\Program;
+use DevTheorem\HandlebarsParser\Ast\SourceLocation;
+use DevTheorem\HandlebarsParser\Ast\Statement;
+use DevTheorem\HandlebarsParser\Ast\StripFlags;
+use DevTheorem\HandlebarsParser\Ast\SubExpression;
+use DevTheorem\HandlebarsParser\Phlexer\Token;
 
 abstract class ParserAbstract
 {

@@ -1,6 +1,13 @@
 {
-    "name": "devtheorem/handlebars.php",
-    "description": "Parse and render Handlebars templates with PHP.",
+    "name": "devtheorem/handlebars-parser",
+    "description": "Parse Handlebars templates to a spec-compliant AST with PHP.",
+    "keywords": [
+        "Handlebars",
+        "PHP",
+        "template",
+        "parse",
+        "AST"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -20,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-            "DevTheorem\\Handlebars\\": "src/"
+            "DevTheorem\\HandlebarsParser\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DevTheorem\\Handlebars\\Test\\": "tests/"
+            "DevTheorem\\HandlebarsParser\\Test\\": "tests/"
         }
     },
     "scripts": {

@@ -1,9 +1,9 @@
 <?php
 
-namespace DevTheorem\Handlebars;
+namespace DevTheorem\HandlebarsParser;
 
-use DevTheorem\Handlebars\Phlexer\Phlexer;
-use DevTheorem\Handlebars\Phlexer\Rule;
+use DevTheorem\HandlebarsParser\Phlexer\Phlexer;
+use DevTheorem\HandlebarsParser\Phlexer\Rule;
 
 /**
  * Implements the same lexical tokenization from

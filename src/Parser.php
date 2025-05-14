@@ -1,26 +1,26 @@
 <?php declare(strict_types=1);
 
-namespace DevTheorem\Handlebars;
+namespace DevTheorem\HandlebarsParser;
 
-use DevTheorem\Handlebars\Ast\ArrayLiteral;
-use DevTheorem\Handlebars\Ast\BooleanLiteral;
-use DevTheorem\Handlebars\Ast\CloseBlock;
-use DevTheorem\Handlebars\Ast\CommentStatement;
-use DevTheorem\Handlebars\Ast\ContentStatement;
-use DevTheorem\Handlebars\Ast\Hash;
-use DevTheorem\Handlebars\Ast\HashLiteral;
-use DevTheorem\Handlebars\Ast\HashPair;
-use DevTheorem\Handlebars\Ast\InverseChain;
-use DevTheorem\Handlebars\Ast\NullLiteral;
-use DevTheorem\Handlebars\Ast\NumberLiteral;
-use DevTheorem\Handlebars\Ast\OpenBlock;
-use DevTheorem\Handlebars\Ast\OpenHelper;
-use DevTheorem\Handlebars\Ast\OpenPartialBlock;
-use DevTheorem\Handlebars\Ast\PartialStatement;
-use DevTheorem\Handlebars\Ast\PathSegment;
-use DevTheorem\Handlebars\Ast\StringLiteral;
-use DevTheorem\Handlebars\Ast\SubExpression;
-use DevTheorem\Handlebars\Ast\UndefinedLiteral;
+use DevTheorem\HandlebarsParser\Ast\ArrayLiteral;
+use DevTheorem\HandlebarsParser\Ast\BooleanLiteral;
+use DevTheorem\HandlebarsParser\Ast\CloseBlock;
+use DevTheorem\HandlebarsParser\Ast\CommentStatement;
+use DevTheorem\HandlebarsParser\Ast\ContentStatement;
+use DevTheorem\HandlebarsParser\Ast\Hash;
+use DevTheorem\HandlebarsParser\Ast\HashLiteral;
+use DevTheorem\HandlebarsParser\Ast\HashPair;
+use DevTheorem\HandlebarsParser\Ast\InverseChain;
+use DevTheorem\HandlebarsParser\Ast\NullLiteral;
+use DevTheorem\HandlebarsParser\Ast\NumberLiteral;
+use DevTheorem\HandlebarsParser\Ast\OpenBlock;
+use DevTheorem\HandlebarsParser\Ast\OpenHelper;
+use DevTheorem\HandlebarsParser\Ast\OpenPartialBlock;
+use DevTheorem\HandlebarsParser\Ast\PartialStatement;
+use DevTheorem\HandlebarsParser\Ast\PathSegment;
+use DevTheorem\HandlebarsParser\Ast\StringLiteral;
+use DevTheorem\HandlebarsParser\Ast\SubExpression;
+use DevTheorem\HandlebarsParser\Ast\UndefinedLiteral;
 
 /* This is an automatically GENERATED file, which should not be manually edited.
  * Instead edit one of the following:

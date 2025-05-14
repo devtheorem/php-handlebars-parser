@@ -1,5 +1,5 @@
 <?php
 
-namespace DevTheorem\Handlebars\Ast;
+namespace DevTheorem\HandlebarsParser\Ast;
 
 class Decorator extends MustacheStatement {}
