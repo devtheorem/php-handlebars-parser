@@ -13,6 +13,24 @@ use PHPUnit\Framework\TestCase;
  */
 class ParserTest extends TestCase
 {
+    public function testParse(): void
+    {
+        /*
+         * Compare to the following Handlebars.js code:
+         *
+         * import {parse} from '@handlebars/parser';
+         * const template = '{{foo bar}}';
+         * const ast = parse(template);
+         * process.stdout.write(JSON.stringify(ast, undefined, 4));
+         */
+
+        $parser = (new ParserFactory())->create();
+        $result = $parser->parse('{{foo bar}}');
+
+        $actual = json_encode($result, JSON_PRETTY_PRINT);
+        $this->assertSame(file_get_contents('tests/test1.json'), $actual);
+    }
+
     /**
      * @return \Generator<array{0: SpecArr}>
      */

@@ -59,14 +59,14 @@ class LexerTest extends TestCase
             {{lines}}
             _tpl;
         $expected = [
-            new Token(Lexer::T_CONTENT, "This\nis a ", 1),
-            new Token(Lexer::T_OPEN, '{{', 2),
-            new Token(Lexer::T_ID, 'template', 2),
-            new Token(Lexer::T_CLOSE, '}}', 2),
-            new Token(Lexer::T_CONTENT, "\nwith multiple\n", 3),
-            new Token(Lexer::T_OPEN, '{{', 4),
-            new Token(Lexer::T_ID, 'lines', 4),
-            new Token(Lexer::T_CLOSE, '}}', 4),
+            new Token(Lexer::T_CONTENT, "This\nis a ", 1, 0),
+            new Token(Lexer::T_OPEN, '{{', 2, 5),
+            new Token(Lexer::T_ID, 'template', 2, 7),
+            new Token(Lexer::T_CLOSE, '}}', 2, 15),
+            new Token(Lexer::T_CONTENT, "\nwith multiple\n", 3, 0),
+            new Token(Lexer::T_OPEN, '{{', 4, 0),
+            new Token(Lexer::T_ID, 'lines', 4, 2),
+            new Token(Lexer::T_CLOSE, '}}', 4, 7),
         ];
         $this->assertEquals($expected, (new Lexer())->tokenize($template));
     }

@@ -1,0 +1,82 @@
+{
+    "type": "Program",
+    "loc": {
+        "start": {
+            "line": 1,
+            "column": 0
+        },
+        "end": {
+            "line": 1,
+            "column": 11
+        }
+    },
+    "body": [
+        {
+            "type": "MustacheStatement",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 11
+                }
+            },
+            "path": {
+                "type": "PathExpression",
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 2
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 5
+                    }
+                },
+                "this_": false,
+                "data": false,
+                "depth": 0,
+                "head": "foo",
+                "tail": [],
+                "parts": [
+                    "foo"
+                ],
+                "original": "foo"
+            },
+            "params": [
+                {
+                    "type": "PathExpression",
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 6
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 9
+                        }
+                    },
+                    "this_": false,
+                    "data": false,
+                    "depth": 0,
+                    "head": "bar",
+                    "tail": [],
+                    "parts": [
+                        "bar"
+                    ],
+                    "original": "bar"
+                }
+            ],
+            "hash": null,
+            "escaped": true,
+            "strip": {
+                "open": false,
+                "close": false
+            }
+        }
+    ],
+    "blockParams": [],
+    "chained": false
+}

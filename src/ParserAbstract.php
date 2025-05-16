@@ -16,6 +16,7 @@ use DevTheorem\HandlebarsParser\Ast\Hash;
 use DevTheorem\HandlebarsParser\Ast\InverseChain;
 use DevTheorem\HandlebarsParser\Ast\Literal;
 use DevTheorem\HandlebarsParser\Ast\MustacheStatement;
+use DevTheorem\HandlebarsParser\Ast\Node;
 use DevTheorem\HandlebarsParser\Ast\OpenBlock;
 use DevTheorem\HandlebarsParser\Ast\OpenHelper;
 use DevTheorem\HandlebarsParser\Ast\OpenPartialBlock;
@@ -167,13 +168,14 @@ abstract class ParserAbstract
 
         if ($numTokens === 0) {
             // empty input - just add sentinel token
-            return [new Token(Lexer::T_EOF, "\0", 0)];
+            return [new Token(Lexer::T_EOF, "\0", 0, 0)];
         }
 
         $lastToken = $tokens[$numTokens - 1];
 
         // Add sentinel token
-        $tokens[] = new Token(Lexer::T_EOF, "\0", $lastToken->line);
+        $column = $lastToken->column + strlen($lastToken->text);
+        $tokens[] = new Token(Lexer::T_EOF, "\0", $lastToken->line, $column);
         return $tokens;
     }
 
@@ -384,6 +386,12 @@ abstract class ParserAbstract
         return "Parse error on line $line" . $expectedString . ', got ' . $this->symbolToName[$symbol];
     }
 
+    private function getNodeError(string $message, Node $node): string
+    {
+        $start = $node->loc->start;
+        return $message . ' - ' . $start->line . ':' . $start->column;
+    }
+
     /**
      * Get limited number of expected tokens in given state.
      *
@@ -498,14 +506,11 @@ abstract class ParserAbstract
     {
         $startToken = $this->tokens[$tokenStartPos];
         $endToken = $this->tokens[$tokenEndPos];
-        $source = '';
 
-        for ($i = $tokenStartPos; $i <= $tokenEndPos; $i++) {
-            $token = $this->tokens[$i];
-            $source .= $token->text;
-        }
+        $start = new Position($startToken->line, $startToken->column);
+        $end = new Position($endToken->line, $endToken->column + strlen($endToken->text));
 
-        return new SourceLocation($source, new Position($startToken->line, -1), new Position($endToken->line, -1));
+        return new SourceLocation($start, $end);
     }
 
     protected function id(string $token): string
@@ -537,9 +542,9 @@ abstract class ParserAbstract
             if ($statements) {
                 $firstLoc = $statements[0]->loc;
                 $lastLoc = $statements[count($statements) - 1]->loc;
-                $loc = new SourceLocation($firstLoc->source, $firstLoc->start, $lastLoc->end);
+                $loc = new SourceLocation($firstLoc->start, $lastLoc->end);
             } else {
-                $loc = new SourceLocation('', new Position(0, -1), new Position(0, -1));
+                $loc = new SourceLocation(new Position(0, 0), new Position(0, 0));
             }
         }
 
@@ -579,7 +584,8 @@ abstract class ParserAbstract
         }
 
         if ($open->path->original !== $close) {
-            throw new \Exception("{$open->path->original} doesn't match {$close}");
+            $msg = $this->getNodeError("{$open->path->original} doesn't match {$close}", $open->path);
+            throw new \Exception($msg);
         }
     }
 
@@ -610,7 +616,8 @@ abstract class ParserAbstract
 
             if (!$isLiteral && ($part === '..' || $part === '.' || $part === 'this')) {
                 if (count($tail) > 0) {
-                    throw new \Exception('Invalid path: ' . $original);
+                    $msg = $this->getNodeError("Invalid path: $original", new Node('', $loc));
+                    throw new \Exception($msg);
                 } elseif ($part === '..') {
                     $depth++;
                 }

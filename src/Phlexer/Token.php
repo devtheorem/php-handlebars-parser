@@ -8,5 +8,6 @@ readonly class Token
         public string $name,
         public string $text,
         public int $line,
+        public int $column,
     ) {}
 }
