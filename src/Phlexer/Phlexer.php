@@ -57,7 +57,6 @@ abstract class Phlexer
             return null;
         }
 
-        $line = substr_count($this->text, "\n", 0, $this->cursor + 1) + 1;
         $subject = substr($this->text, $this->cursor);
 
         foreach ($this->rules as $rule) {
@@ -66,6 +65,7 @@ abstract class Phlexer
             }
 
             if (preg_match("/\\A{$rule->pattern}/", $subject, $matches)) {
+                [$line, $column] = $this->getPosition();
                 $this->yytext = $matches[0];
                 $this->cursor += strlen($this->yytext);
                 $tokenName = ($rule->handler)();
@@ -75,11 +75,35 @@ abstract class Phlexer
                     return $this->getNextToken();
                 }
 
-                return new Token($tokenName, $this->yytext, $line);
+                return new Token($tokenName, $this->yytext, $line, $column);
             }
         }
 
         throw new \Exception('Unexpected token: "' . $subject[0] . '"');
+    }
+
+    /**
+     * @return array{int, int}
+     */
+    private function getPosition(): array
+    {
+        $line = 1;
+        $column = -1;
+
+        for ($i = 0; $i < $this->cursor + 1; $i++) {
+            if ($this->text[$i] === "\n") {
+                $line++;
+                $column = -1;
+            } else {
+                $column++;
+            }
+        }
+
+        if ($column === -1) {
+            $column = 0;
+        }
+
+        return [$line, $column];
     }
 
     protected function pushState(string $state): void
