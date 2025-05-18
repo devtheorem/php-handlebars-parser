@@ -380,16 +380,16 @@ abstract class ParserAbstract
     {
         $expectedString = '';
         if ($expected = $this->getExpectedTokens($state)) {
-            $expectedString = ': Expecting ' . implode(' or ', $expected);
+            $expectedString = ': Expecting ' . implode(', ', $expected);
         }
 
-        return "Parse error on line $line" . $expectedString . ', got ' . $this->symbolToName[$symbol];
+        return "Parse error on line {$line}{$expectedString}, got {$this->symbolToName[$symbol]}";
     }
 
     private function getNodeError(string $message, Node $node): string
     {
         $start = $node->loc->start;
-        return $message . ' - ' . $start->line . ':' . $start->column;
+        return "{$message} - {$start->line}:{$start->column}";
     }
 
     /**
@@ -622,7 +622,7 @@ abstract class ParserAbstract
                     $depth++;
                 }
             } else {
-                $tail[] = "{$partPrefix}{$part}";
+                $tail[] = $partPrefix . $part;
             }
         }
 
@@ -690,7 +690,7 @@ abstract class ParserAbstract
                 $firstStmt = $inverseAndProgram->program->body[0];
 
                 if (!$firstStmt instanceof BlockStatement && !$firstStmt instanceof PartialBlockStatement) {
-                    throw new \Exception('Unexpected statement type: ' . $firstStmt->type);
+                    throw new \Exception("Unexpected statement type: {$firstStmt->type}");
                 }
 
                 $firstStmt->closeStrip = $close->strip;
