@@ -592,7 +592,7 @@ abstract class ParserAbstract
     /**
      * @param PathSegment[] $parts
      */
-    protected function preparePath(bool $data, SubExpression|null $sexpr, array $parts, SourceLocation $loc): PathExpression
+    protected function preparePath(bool $data, ?SubExpression $sexpr, array $parts, SourceLocation $loc): PathExpression
     {
         if ($data) {
             $original = '@';

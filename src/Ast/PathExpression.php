@@ -5,8 +5,8 @@ namespace DevTheorem\HandlebarsParser\Ast;
 class PathExpression extends Expression
 {
     /**
-     * @param (string | SubExpression)[] $parts
      * @param string[] $tail
+     * @param (string | SubExpression)[] $parts
      */
     public function __construct(
         public bool $this_,
