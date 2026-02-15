@@ -36,6 +36,7 @@ abstract class ParserAbstract
     private const SYMBOL_NONE = -1;
 
     protected Lexer $lexer;
+    protected WhitespaceControl $whitespaceControl;
 
     /*
      * The following members will be filled with generated parsing data:
@@ -132,9 +133,10 @@ abstract class ParserAbstract
     /**
      * Creates a parser instance.
      */
-    public function __construct(Lexer $lexer)
+    public function __construct(Lexer $lexer, WhitespaceControl $whitespaceControl)
     {
         $this->lexer = $lexer;
+        $this->whitespaceControl = $whitespaceControl;
         $this->initReduceCallbacks();
         $this->tokenMap = $this->createTokenMap();
     }
@@ -147,6 +149,7 @@ abstract class ParserAbstract
         $tokens = $this->lexer->tokenize($code);
         $this->tokens = $this->postprocessTokens($tokens);
         $result = $this->doParse();
+        $result = $this->whitespaceControl->accept($result);
 
         // Clear out some of the interior state, so we don't hold onto unnecessary
         // memory between uses of the parser
