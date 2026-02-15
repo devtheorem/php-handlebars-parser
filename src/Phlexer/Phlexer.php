@@ -2,6 +2,8 @@
 
 namespace DevTheorem\HandlebarsParser\Phlexer;
 
+use DevTheorem\HandlebarsParser\ErrorContext;
+
 abstract class Phlexer
 {
     public const INITIAL_STATE = 'INITIAL';
@@ -79,7 +81,38 @@ abstract class Phlexer
             }
         }
 
-        throw new \Exception('Unexpected token: "' . $subject[0] . '"');
+        $line = $this->getPosition()[0];
+        $context = ErrorContext::getErrorContext(substr($this->text, 0, $this->cursor), $subject);
+
+        throw new \Exception("Lexical error on line $line. Unrecognized text.\n{$context}");
+    }
+
+    /**
+     * @return array{string, string}
+     */
+    public function getPositionContext(int $line, int $column): array
+    {
+        $lineNum = 1;
+        $cursor = 0;
+        $textLen = strlen($this->text);
+
+        while ($lineNum < $line && $cursor < $textLen) {
+            if ($this->text[$cursor] === "\n") {
+                $lineNum++;
+            }
+            $cursor++;
+        }
+
+        $cursor += $column;
+
+        if ($lineNum !== $line || $cursor > $textLen) {
+            throw new \Exception("Invalid position $line:$column");
+        }
+
+        return [
+            substr($this->text, 0, $cursor),
+            substr($this->text, $cursor),
+        ];
     }
 
     /**

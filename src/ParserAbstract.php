@@ -317,7 +317,7 @@ abstract class ParserAbstract
                     switch ($this->errorState) {
                         case 0:
                             $token = $this->tokens[$this->tokenPos];
-                            throw new \Exception($this->getErrorMessage($symbol, $state, $token->line));
+                            throw new \Exception($this->getErrorMessage($symbol, $state, $token->line, $token->column));
                             // Break missing intentionally
                         case 1:
                         case 2:
@@ -379,14 +379,15 @@ abstract class ParserAbstract
      *
      * @return string Formatted error message
      */
-    protected function getErrorMessage(int $symbol, int $state, int $line): string
+    protected function getErrorMessage(int $symbol, int $state, int $line, int $column): string
     {
-        $expectedString = '';
-        if ($expected = $this->getExpectedTokens($state)) {
-            $expectedString = ': Expecting ' . implode(', ', $expected);
-        }
+        $expected = $this->getExpectedTokens($state);
+        $expectedString = "Expecting " . implode(', ', $expected) . ', got';
 
-        return "Parse error on line {$line}{$expectedString}, got {$this->symbolToName[$symbol]}";
+        [$before, $after] = $this->lexer->getPositionContext($line, $column);
+        $context = ErrorContext::getErrorContext($before, $after);
+
+        return "Parse error on line {$line}:\n{$context}\n{$expectedString} {$this->symbolToName[$symbol]}";
     }
 
     private function getNodeError(string $message, Node $node): string
@@ -398,7 +399,7 @@ abstract class ParserAbstract
     /**
      * Get limited number of expected tokens in given state.
      *
-     * @return string[] Expected tokens. If too many, an empty array is returned.
+     * @return string[] Expected tokens. Returns a max of 10 items.
      */
     protected function getExpectedTokens(int $state): array
     {
@@ -416,9 +417,9 @@ abstract class ParserAbstract
                     && $this->action[$idx] !== $this->defaultAction
                     && $symbol !== $this->errorSymbol
                 ) {
-                    if (count($expected) === 4) {
+                    if (count($expected) === 10) {
                         /* Too many expected tokens */
-                        return [];
+                        return $expected;
                     }
 
                     $expected[] = $name;
