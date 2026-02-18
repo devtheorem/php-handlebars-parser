@@ -173,17 +173,7 @@ mustache:
     // Parsing out the '&' escape token at AST level saves ~500 bytes after min due to the removal of one parser node.
     // This also allows for handler unification as all mustache node instances can utilize the same handler
     // See https://github.com/handlebars-lang/handlebars-parser/blob/master/lib/parse.js
-    OPEN hash CLOSE {
-        $$ = $this->prepareMustache(
-            path: new HashLiteral($2->pairs, $2->loc),
-            params: [],
-            hash: null,
-            open: $1,
-            strip: $this->stripFlags($1, $3),
-            loc: locInfo(),
-        );
-    }
-  | OPEN expr expr_list optional_hash CLOSE {
+    OPEN expr expr_list optional_hash CLOSE {
         $$ = $this->prepareMustache(
             path: $2,
             params: $3,
@@ -244,17 +234,11 @@ expr_list:
 
 expr:
     helperName { $$ = $1; }
-  | exprHead { $$ = $1; }
-;
-
-exprHead:
-    arrayLiteral { $$ = $1; }
   | sexpr { $$ = $1; }
 ;
 
 sexpr:
-    OPEN_SEXPR hash CLOSE_SEXPR { $$ = new HashLiteral($2->pairs, $2->loc); }
-  | OPEN_SEXPR expr expr_list optional_hash CLOSE_SEXPR {
+    OPEN_SEXPR expr expr_list optional_hash CLOSE_SEXPR {
         $$ = new SubExpression(
             path: $2,
             params: $3,
@@ -286,11 +270,6 @@ hashSegment:
             value: $3,
             loc: locInfo(),
         );
-    };
-
-arrayLiteral:
-    OPEN_ARRAY expr_list CLOSE_ARRAY {
-        $$ = new ArrayLiteral($2, locInfo());
     };
 
 optional_blockParams:
@@ -334,7 +313,7 @@ sep:
 ;
 
 path:
-    exprHead sep pathSegments {
+    sexpr sep pathSegments {
         $$ = $this->preparePath(
             data: false,
             sexpr: $1,

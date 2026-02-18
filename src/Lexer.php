@@ -49,8 +49,8 @@ final class Lexer extends Phlexer
     public function __construct()
     {
         $LEFT_STRIP = $RIGHT_STRIP = '~';
-        $LOOKAHEAD = '[=~}\\s\\/.)\\]|]';
-        $LITERAL_LOOKAHEAD = '[~}\\s)\\]]';
+        $LOOKAHEAD = '[=~}\\s\\/.)|]';
+        $LITERAL_LOOKAHEAD = '[~}\\s)]';
 
         /*
          * ID is the inverse of control characters.
@@ -112,15 +112,6 @@ final class Lexer extends Phlexer
 
             new Rule(['mu'], '\\(', fn() => self::T_OPEN_SEXPR),
             new Rule(['mu'], '\\)', fn() => self::T_CLOSE_SEXPR),
-
-            new Rule(['mu'], '\\[', function () {
-                // Assuming yy.syntax.square === 'string'. OPEN_ARRAY option not handled
-                $this->rewind(strlen($this->yytext));
-                // escaped literal
-                $this->pushState('escl');
-                return null;
-            }),
-            new Rule(['mu'], ']', fn() => self::T_CLOSE_ARRAY),
 
             new Rule(['mu'], '{{{{', fn() => self::T_OPEN_RAW_BLOCK),
             new Rule(['mu'], '}}}}', function () {
@@ -193,9 +184,8 @@ final class Lexer extends Phlexer
 
             new Rule(['mu'], $ID, fn() => self::T_ID),
 
-            new Rule(['escl'], '\\[(\\\\\\]|[^\\]])*\\]', function () {
+            new Rule(['mu'], '\\[(\\\\\\]|[^\\]])*\\]', function () {
                 $this->replace('/\\\\([\\\\\\]])/', '$1');
-                $this->popState();
                 return self::T_ID;
             }),
 
