@@ -146,8 +146,8 @@ abstract class ParserAbstract
      */
     public function parse(string $code): Program
     {
-        $tokens = $this->lexer->tokenize($code);
-        $this->tokens = $this->postprocessTokens($tokens);
+        $this->lexer->initialize($code);
+        $this->tokens = [];
         $result = $this->doParse();
         $result = $this->whitespaceControl->accept($result);
 
@@ -161,33 +161,26 @@ abstract class ParserAbstract
         return $result;
     }
 
-    /**
-     * @param list<Token> $tokens
-     * @return list<Token>
-     */
-    protected function postprocessTokens(array $tokens): array
+    private function readNextToken(): Token
     {
-        $numTokens = count($tokens);
+        $token = $this->lexer->getNextToken();
 
-        if ($numTokens === 0) {
-            // empty input - just add sentinel token
-            return [new Token(Lexer::T_EOF, "\0", 0, 0)];
+        if ($token === null) {
+            if ($this->tokens) {
+                $lastToken = end($this->tokens);
+                $line = $lastToken->line;
+                $column = $lastToken->column + strlen($lastToken->text);
+            } else {
+                $line = 0;
+                $column = 0;
+            }
+
+            $token = new Token(Lexer::T_EOF, "\0", $line, $column);
         }
 
-        $lastToken = $tokens[$numTokens - 1];
+        $this->tokens[] = $token;
 
-        // Add sentinel token
-        $column = $lastToken->column + strlen($lastToken->text);
-        $tokens[] = new Token(Lexer::T_EOF, "\0", $lastToken->line, $column);
-        return $tokens;
-    }
-
-    /**
-     * @return Token[]
-     */
-    public function getTokens(): array
-    {
-        return $this->tokens;
+        return $token;
     }
 
     protected function doParse(): Program
@@ -218,7 +211,7 @@ abstract class ParserAbstract
                 $rule = $this->actionDefault[$state];
             } else {
                 if ($symbol === self::SYMBOL_NONE) {
-                    $token = $this->tokens[++$this->tokenPos];
+                    $token = $this->tokens[++$this->tokenPos] ?? $this->readNextToken();
                     $tokenName = $token->name;
 
                     // Map the lexer token id to the internally used symbols.
