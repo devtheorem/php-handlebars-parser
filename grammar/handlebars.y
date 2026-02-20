@@ -37,9 +37,10 @@
 %%
 
 /*
- * Should match the grammar (as of 2025-01-20) of
- * https://github.com/handlebars-lang/handlebars-parser/blob/master/src/handlebars.yy
- * EBNF grammar has been converted to BNF.
+ * Grammar should match https://github.com/handlebars-lang/handlebars-parser/blob/master/src/handlebars.yy
+ * as of 2026-02-20. EBNF grammar has been converted to BNF.
+ * Exception: the hash and array literal syntax (https://github.com/handlebars-lang/handlebars-parser/pull/15)
+ * has been reverted for parity with the released version of Handlebars.js.
  */
 
 program:
