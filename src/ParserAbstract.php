@@ -279,6 +279,7 @@ abstract class ParserAbstract
                 if ($rule === 0) {
                     /* accept */
                     //$this->traceAccept();
+                    /** @phpstan-ignore return.type */
                     return $this->semValue;
                 }
                 if ($rule !== $this->unexpectedTokenRule) {
@@ -444,21 +445,21 @@ abstract class ParserAbstract
             if ($name === 'EOF' || $name === 'error') {
                 continue;
             }
-            $tokenMap[$name] = constant(static::class . '::' . $name);
-        }
+            $extSymbol = constant(static::class . '::' . $name);
 
-        // We have created a map from token IDs to external symbol IDs.
-        // Now map them to the internal symbol ID.
-        $fullTokenMap = [];
-        foreach ($tokenMap as $token => $extSymbol) {
+            if (!is_int($extSymbol)) {
+                $type = get_debug_type($extSymbol);
+                throw new \Exception("Unexpected external ID type $type for token $name");
+            }
+
             $intSymbol = $this->tokenToSymbol[$extSymbol];
             if ($intSymbol === $this->invalidSymbol) {
                 continue;
             }
-            $fullTokenMap[$token] = $intSymbol;
+            $tokenMap[$name] = $intSymbol;
         }
 
-        return $fullTokenMap;
+        return $tokenMap;
     }
 
     /*
