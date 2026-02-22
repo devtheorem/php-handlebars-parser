@@ -14,7 +14,6 @@ final class Lexer extends Phlexer
 {
     public const T_BOOLEAN = 'BOOLEAN';
     public const T_CLOSE = 'CLOSE';
-    public const T_CLOSE_ARRAY = 'CLOSE_ARRAY';
     public const T_CLOSE_BLOCK_PARAMS = 'CLOSE_BLOCK_PARAMS';
     public const T_CLOSE_RAW_BLOCK = 'CLOSE_RAW_BLOCK';
     public const T_CLOSE_SEXPR = 'CLOSE_SEXPR';

@@ -33,43 +33,41 @@ class Parser extends ParserAbstract
     public const YYERRTOK = 256;
     public const BOOLEAN = 257;
     public const CLOSE = 258;
-    public const CLOSE_ARRAY = 259;
-    public const CLOSE_BLOCK_PARAMS = 260;
-    public const CLOSE_RAW_BLOCK = 261;
-    public const CLOSE_SEXPR = 262;
-    public const CLOSE_UNESCAPED = 263;
-    public const COMMENT = 264;
-    public const CONTENT = 265;
-    public const DATA = 266;
-    public const END_RAW_BLOCK = 267;
-    public const EQUALS = 268;
-    public const ID = 269;
-    public const INVALID = 270;
-    public const INVERSE = 271;
-    public const NULL = 272;
-    public const NUMBER = 273;
-    public const OPEN = 274;
-    public const OPEN_ARRAY = 275;
-    public const OPEN_BLOCK = 276;
-    public const OPEN_BLOCK_PARAMS = 277;
-    public const OPEN_ENDBLOCK = 278;
-    public const OPEN_INVERSE = 279;
-    public const OPEN_INVERSE_CHAIN = 280;
-    public const OPEN_PARTIAL = 281;
-    public const OPEN_PARTIAL_BLOCK = 282;
-    public const OPEN_RAW_BLOCK = 283;
-    public const OPEN_SEXPR = 284;
-    public const OPEN_UNESCAPED = 285;
-    public const PRIVATE_SEP = 286;
-    public const SEP = 287;
-    public const STRING = 288;
-    public const UNDEFINED = 289;
+    public const CLOSE_BLOCK_PARAMS = 259;
+    public const CLOSE_RAW_BLOCK = 260;
+    public const CLOSE_SEXPR = 261;
+    public const CLOSE_UNESCAPED = 262;
+    public const COMMENT = 263;
+    public const CONTENT = 264;
+    public const DATA = 265;
+    public const END_RAW_BLOCK = 266;
+    public const EQUALS = 267;
+    public const ID = 268;
+    public const INVALID = 269;
+    public const INVERSE = 270;
+    public const NULL = 271;
+    public const NUMBER = 272;
+    public const OPEN = 273;
+    public const OPEN_BLOCK = 274;
+    public const OPEN_BLOCK_PARAMS = 275;
+    public const OPEN_ENDBLOCK = 276;
+    public const OPEN_INVERSE = 277;
+    public const OPEN_INVERSE_CHAIN = 278;
+    public const OPEN_PARTIAL = 279;
+    public const OPEN_PARTIAL_BLOCK = 280;
+    public const OPEN_RAW_BLOCK = 281;
+    public const OPEN_SEXPR = 282;
+    public const OPEN_UNESCAPED = 283;
+    public const PRIVATE_SEP = 284;
+    public const SEP = 285;
+    public const STRING = 286;
+    public const UNDEFINED = 287;
 
-    protected int $tokenToSymbolMapSize = 290;
+    protected int $tokenToSymbolMapSize = 288;
     protected int $actionTableSize = 45;
     protected int $gotoTableSize = 49;
 
-    protected int $invalidSymbol = 35;
+    protected int $invalidSymbol = 33;
     protected int $errorSymbol = 1;
     protected int $defaultAction = -32766;
     protected int $unexpectedTokenRule = 32767;
@@ -110,41 +108,39 @@ class Parser extends ParserAbstract
         "SEP",
         "STRING",
         "UNDEFINED",
-        "CLOSE_ARRAY",
-        "INVALID",
-        "OPEN_ARRAY"
+        "INVALID"
     );
 
     protected array $tokenToSymbol = array(
-            0,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,   35,   35,   35,   35,
-           35,   35,   35,   35,   35,   35,    1,    2,    3,   32,
-            4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
-           33,   14,   15,   16,   17,   34,   18,   19,   20,   21,
-           22,   23,   24,   25,   26,   27,   28,   29,   30,   31
+            0,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+           33,   33,   33,   33,   33,   33,    1,    2,    3,    4,
+            5,    6,    7,    8,    9,   10,   11,   12,   13,   32,
+           14,   15,   16,   17,   18,   19,   20,   21,   22,   23,
+           24,   25,   26,   27,   28,   29,   30,   31
     );
 
     protected array $action = array(

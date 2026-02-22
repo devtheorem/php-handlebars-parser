@@ -2,7 +2,6 @@
 
 %token BOOLEAN
 %token CLOSE
-%token CLOSE_ARRAY
 %token CLOSE_BLOCK_PARAMS
 %token CLOSE_RAW_BLOCK
 %token CLOSE_SEXPR
@@ -18,7 +17,6 @@
 %token NULL
 %token NUMBER
 %token OPEN
-%token OPEN_ARRAY
 %token OPEN_BLOCK
 %token OPEN_BLOCK_PARAMS
 %token OPEN_ENDBLOCK
