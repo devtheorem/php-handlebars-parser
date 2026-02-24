@@ -601,12 +601,12 @@ abstract class ParserAbstract
         $tail = [];
         $depth = 0;
 
-        for ($i = 0; $i < count($parts); $i++) {
-            $part = $parts[$i]->part;
+        foreach ($parts as $segment) {
+            $part = $segment->part;
             // If we have [] syntax then we do not treat path references as operators,
             // i.e. foo.[this] resolves to approximately context.foo['this']
-            $isLiteral = $parts[$i]->original !== $part;
-            $separator = $parts[$i]->separator;
+            $isLiteral = $segment->original !== $part;
+            $separator = $segment->separator;
 
             $partPrefix = $separator === '.#' ? '#' : '';
 
