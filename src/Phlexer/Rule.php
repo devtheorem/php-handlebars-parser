@@ -10,6 +10,13 @@ readonly class Rule
     public array $startConditions;
 
     /**
+     * Number of capturing groups (non-special '(') in the pattern.
+     * Used when building per-state combined alternation patterns
+     * to correctly compute which match group corresponds to this rule.
+     */
+    public int $captureCount;
+
+    /**
      * @param string[] $startConditions,
      * @param \Closure(): ?string $handler
      */
@@ -19,10 +26,8 @@ readonly class Rule
         public \Closure $handler,
     ) {
         $this->startConditions = $startConditions ?: [Phlexer::INITIAL_STATE];
-    }
-
-    public function hasStartCondition(string $condition): bool
-    {
-        return in_array($condition, $this->startConditions, true);
+        // Count capturing '(' — those not preceded by '\' and not followed by '?'
+        $count = preg_match_all("/(?<!\\\\)\((?!\?)/", $this->pattern);
+        $this->captureCount = is_int($count) ? $count : 0;
     }
 }
