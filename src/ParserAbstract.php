@@ -553,7 +553,7 @@ abstract class ParserAbstract
      * @param Expression[] $params
      */
     protected function prepareMustache(
-        PathExpression|Literal $path,
+        PathExpression|Literal|SubExpression $path,
         array $params,
         ?Hash $hash,
         string $open,

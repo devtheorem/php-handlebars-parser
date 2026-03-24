@@ -48,6 +48,12 @@ class ParserTest extends TestCase
             ['{{te.[e.s[t].endP}}'],
             ['{{te.[e[s.t].endQ}}'],
             ['{{#with items}}OK!{{/with}}'],
+            // SubExpression as PathExpression root
+            // https://github.com/handlebars-lang/handlebars-parser/commit/1b9f38aba8761c67e3c824f22a6da6c82d7e3d79
+            ['{{(my-helper foo).bar}}'],
+            ['{{((my-helper foo).bar baz)}}'],
+            ['{{(foo (my-helper bar).baz)}}'],
+            ['{{(foo bar=(my-helper baz).qux)}}'],
         ];
     }
 
