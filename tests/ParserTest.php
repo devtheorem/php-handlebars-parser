@@ -2,7 +2,6 @@
 
 namespace DevTheorem\HandlebarsParser\Test;
 
-use DevTheorem\HandlebarsParser\Ast\Program;
 use DevTheorem\HandlebarsParser\ParserFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -296,8 +295,8 @@ class ParserTest extends TestCase
         $parser = (new ParserFactory())->create();
 
         try {
-            $result = $parser->parse($spec['template']);
-            $this->assertInstanceOf(Program::class, $result);
+            $parser->parse($spec['template']);
+            $this->expectNotToPerformAssertions();
         } catch (\Exception $e) {
             if (isset($spec['exception'])) {
                 if (is_string($spec['exception'])) {

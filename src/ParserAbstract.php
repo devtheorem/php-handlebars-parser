@@ -513,7 +513,7 @@ abstract class ParserAbstract
 
     protected function id(string $token): string
     {
-        if (preg_match('/^\\[.*]$/', $token)) {
+        if ($token !== '' && $token[0] === '[' && $token[-1] === ']') {
             return substr($token, 1, -1);
         } else {
             return $token;
@@ -562,7 +562,7 @@ abstract class ParserAbstract
     ): MustacheStatement {
         $escapeFlag = $open[3] ?? $open[2] ?? '';
         $escaped = $escapeFlag !== '{' && $escapeFlag !== '&';
-        $decorator = preg_match('/\\*/', $open);
+        $decorator = str_contains($open, '*');
 
         return new MustacheStatement(
             type: $decorator ? 'Decorator' : 'MustacheStatement',
@@ -613,7 +613,7 @@ abstract class ParserAbstract
             $original .= ($separator ?? '') . $part;
 
             if (!$isLiteral && ($part === '..' || $part === '.' || $part === 'this')) {
-                if (count($tail) > 0) {
+                if ($tail !== []) {
                     $msg = $this->getNodeError("Invalid path: $original", new Node('', $loc));
                     throw new \Exception($msg);
                 } elseif ($part === '..') {
@@ -673,7 +673,7 @@ abstract class ParserAbstract
             $this->validateClose($openBlock, $close);
         }
 
-        $decorator = preg_match('/\\*/', $openBlock->open);
+        $decorator = str_contains($openBlock->open, '*');
 
         $program->blockParams = $openBlock->blockParams;
 

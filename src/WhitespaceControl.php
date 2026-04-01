@@ -134,11 +134,12 @@ class WhitespaceControl
         }
 
         // Find the inverse program that is involved with whitespace stripping.
-        $program = $block instanceof BlockStatement
+        $isBlockStatement = $block instanceof BlockStatement;
+        $program = $isBlockStatement
             ? ($block->program ?? $block->inverse)
             : $block->program;
 
-        $inverse = ($block instanceof BlockStatement && $block->program && $block->inverse)
+        $inverse = ($isBlockStatement && $block->program && $block->inverse)
             ? $block->inverse
             : null;
         $firstInverse = $inverse;
