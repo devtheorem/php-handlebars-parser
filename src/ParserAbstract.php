@@ -632,7 +632,7 @@ abstract class ParserAbstract
             depth: $depth,
             head: $head,
             tail: $tail,
-            parts: $head ? [$head, ...$tail] : $tail,
+            parts: $head !== '' ? [$head, ...$tail] : $tail,
             original: $original,
             loc: $loc,
         );

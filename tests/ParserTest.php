@@ -26,7 +26,7 @@ class ParserTest extends TestCase
          */
 
         $parser = (new ParserFactory())->create();
-        $result = $parser->parse('{{foo bar}}');
+        $result = $parser->parse('{{foo 0.bar}}');
 
         $actual = json_encode($result, JSON_PRETTY_PRINT);
         $this->assertSame(file_get_contents('tests/test1.json'), $actual);
