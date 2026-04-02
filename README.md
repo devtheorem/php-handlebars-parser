@@ -30,11 +30,10 @@ Otherwise, `$result` will contain a `DevTheorem\HandlebarsParser\Ast\Program` in
 
 ## Whitespace handling
 
-The parser can be created with an optional boolean argument,
-to support the `ignoreStandalone` Handlebars compilation option:
+The `ignoreStandalone` Handlebars compilation option can be passed to `parse()`:
 
 ```php
-$parser = (new ParserFactory())->create(ignoreStandalone: true);
+$result = $parser->parse($template, ignoreStandalone: true);
 ```
 
 ## Author

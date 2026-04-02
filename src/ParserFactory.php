@@ -4,8 +4,8 @@ namespace DevTheorem\HandlebarsParser;
 
 class ParserFactory
 {
-    public function create(bool $ignoreStandalone = false): Parser
+    public function create(): Parser
     {
-        return new Parser(new Lexer(), new WhitespaceControl($ignoreStandalone));
+        return new Parser(new Lexer());
     }
 }

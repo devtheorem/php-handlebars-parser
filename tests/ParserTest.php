@@ -9,7 +9,10 @@ use PHPUnit\Framework\TestCase;
 /**
  * @phpstan-type ErrorCase array{template: string, expected: string}
  * @phpstan-type SpecToken array{name: string, text: string}
- * @phpstan-type SpecArr array{it: string, number?: string, template: string, expected?: string, exception?: string|true}
+ * @phpstan-type SpecArr array{
+ *     it: string, number?: string, template: string, expected?: string, exception?: string|true,
+ *     compileOptions?: array{ignoreStandalone?: bool}
+ * }
  */
 class ParserTest extends TestCase
 {
@@ -295,7 +298,7 @@ class ParserTest extends TestCase
         $parser = (new ParserFactory())->create();
 
         try {
-            $parser->parse($spec['template']);
+            $parser->parse($spec['template'], $spec['compileOptions']['ignoreStandalone'] ?? false);
             $this->expectNotToPerformAssertions();
         } catch (\Exception $e) {
             if (isset($spec['exception'])) {

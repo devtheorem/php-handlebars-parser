@@ -36,7 +36,6 @@ abstract class ParserAbstract
     private const SYMBOL_NONE = -1;
 
     protected Lexer $lexer;
-    protected WhitespaceControl $whitespaceControl;
 
     /*
      * The following members will be filled with generated parsing data:
@@ -133,10 +132,9 @@ abstract class ParserAbstract
     /**
      * Creates a parser instance.
      */
-    public function __construct(Lexer $lexer, WhitespaceControl $whitespaceControl)
+    public function __construct(Lexer $lexer)
     {
         $this->lexer = $lexer;
-        $this->whitespaceControl = $whitespaceControl;
         $this->initReduceCallbacks();
         $this->tokenMap = $this->createTokenMap();
     }
@@ -144,12 +142,12 @@ abstract class ParserAbstract
     /**
      * Parses a Handlebars template into a node tree.
      */
-    public function parse(string $code): Program
+    public function parse(string $code, bool $ignoreStandalone = false): Program
     {
         $this->lexer->initialize($code);
         $this->tokens = [];
         $result = $this->doParse();
-        $result = $this->whitespaceControl->accept($result);
+        $result = (new WhitespaceControl($ignoreStandalone))->accept($result);
 
         // Clear out some of the interior state, so we don't hold onto unnecessary
         // memory between uses of the parser
