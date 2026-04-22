@@ -237,15 +237,18 @@ class WhitespaceControl
 
         // Nodes that end with newlines are considered whitespace (but are special-cased for strip operations)
         $prev = $body[$i - 1] ?? null;
-        $sibling = $body[$i - 2] ?? null;
 
         if ($prev === null) {
             return $isRoot;
         }
 
         if ($prev instanceof ContentStatement) {
-            $pattern = ($sibling || !$isRoot) ? '/\r?\n\s*?$/' : '/(^|\r?\n)\s*?$/';
-            return (bool) preg_match($pattern, $prev->original);
+            $trimmed = rtrim($prev->original, " \t");
+            $endsWithNewline = str_ends_with($trimmed, "\n");
+            if (isset($body[$i - 2]) || !$isRoot) {
+                return $endsWithNewline;
+            }
+            return $trimmed === '' || $endsWithNewline;
         }
 
         return false;
@@ -263,15 +266,18 @@ class WhitespaceControl
         }
 
         $next = $body[$i + 1] ?? null;
-        $sibling = $body[$i + 2] ?? null;
 
         if ($next === null) {
             return $isRoot;
         }
 
         if ($next instanceof ContentStatement) {
-            $pattern = ($sibling || !$isRoot) ? '/^\s*?\r?\n/' : '/^\s*?(\r?\n|$)/';
-            return (bool) preg_match($pattern, $next->original);
+            $trimmed = ltrim($next->original, " \t");
+            $startsWithNewline = str_starts_with($trimmed, "\n") || str_starts_with($trimmed, "\r\n");
+            if (isset($body[$i + 2]) || !$isRoot) {
+                return $startsWithNewline;
+            }
+            return $trimmed === '' || $startsWithNewline;
         }
 
         return false;
@@ -300,9 +306,8 @@ class WhitespaceControl
         }
 
         $original = $current->value;
-        $current->value = ($multiple
-            ? preg_replace('/^\s+/', '', $current->value)
-            : preg_replace('/^[ \t]*\r?\n?/', '', $current->value)) ?? '';
+        $pattern = $multiple ? '/^\s+/' : '/^[ \t]*\r?\n?/';
+        $current->value = preg_replace($pattern, '', $current->value) ?? '';
         $current->rightStripped = ($current->value !== $original);
     }
 
@@ -330,9 +335,8 @@ class WhitespaceControl
 
         // We omit the last node if it's whitespace only and not preceded by a non-content node.
         $original = $current->value;
-        $current->value = ($multiple
-            ? preg_replace('/\s+$/', '', $current->value)
-            : preg_replace('/[ \t]+$/', '', $current->value)) ?? '';
+        $pattern = $multiple ? '/\s+$/' : '/[ \t]+$/';
+        $current->value = preg_replace($pattern, '', $current->value) ?? '';
         $current->leftStripped = ($current->value !== $original);
 
         return $current->leftStripped;
