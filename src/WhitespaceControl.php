@@ -116,8 +116,26 @@ class WhitespaceControl
                 $this->omitRight($body, $i);
 
                 /** @var BlockStatement|PartialBlockStatement $current */
-                $innerBody = ($current->inverse ?? $current->program)->body;
-                $this->omitLeft($innerBody);
+                $chainNode = $current instanceof BlockStatement ? $current->inverse : null;
+                if ($chainNode !== null && $chainNode->chained) {
+                    // For chained else-if blocks, walk the chain and strip trailing indent
+                    // from every terminal body so all execution paths lose the close-tag indent.
+                    while ($chainNode !== null && $chainNode->chained) {
+                        $lastBlock = $chainNode->body[array_key_last($chainNode->body)] ?? null;
+                        if (!$lastBlock instanceof BlockStatement) {
+                            break;
+                        }
+                        if ($lastBlock->program !== null) {
+                            $this->omitLeft($lastBlock->program->body);
+                        }
+                        $chainNode = $lastBlock->inverse;
+                    }
+                    if ($chainNode !== null) {
+                        $this->omitLeft($chainNode->body);
+                    }
+                } else {
+                    $this->omitLeft(($current->inverse ?? $current->program)->body);
+                }
             }
         }
 
