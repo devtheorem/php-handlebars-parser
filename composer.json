@@ -20,10 +20,10 @@
         "php": ">=8.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.94",
-        "ircmaxell/php-yacc": "dev-master",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "ircmaxell/php-yacc": "^0.0.8",
         "jbboehr/handlebars-spec": "dev-master",
-        "phpstan/phpstan": "^2.1.46",
+        "phpstan/phpstan": "^2.1.51",
         "phpunit/phpunit": "^11.5"
     },
     "autoload": {
