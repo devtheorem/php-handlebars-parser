@@ -139,15 +139,12 @@ abstract class ParserAbstract
         $this->tokenMap = $this->createTokenMap();
     }
 
-    /**
-     * Parses a Handlebars template into a node tree.
-     */
-    public function parse(string $code, bool $ignoreStandalone = false): Program
+    public function parseWithoutProcessing(string $code): Program
     {
         $this->lexer->initialize($code);
         $this->tokens = [];
         $result = $this->doParse();
-        $result = (new WhitespaceControl($ignoreStandalone))->accept($result);
+        $this->tokens = [];
 
         // Clear out some of the interior state, so we don't hold onto unnecessary
         // memory between uses of the parser
@@ -157,6 +154,16 @@ abstract class ParserAbstract
         $this->semValue = null;
 
         return $result;
+    }
+
+    /**
+     * Parses a Handlebars template into a node tree.
+     */
+    public function parse(string $code, bool $ignoreStandalone = false): Program
+    {
+        $ast = $this->parseWithoutProcessing($code);
+        $strip = new WhitespaceControl($ignoreStandalone);
+        return $strip->accept($ast);
     }
 
     private function readNextToken(): Token
