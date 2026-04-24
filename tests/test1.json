@@ -35,7 +35,7 @@
                         "column": 5
                     }
                 },
-                "this_": false,
+                "this": false,
                 "data": false,
                 "depth": 0,
                 "head": "foo",
@@ -58,7 +58,7 @@
                             "column": 11
                         }
                     },
-                    "this_": false,
+                    "this": false,
                     "data": false,
                     "depth": 0,
                     "head": "0",
