@@ -165,13 +165,13 @@ final class Lexer extends Phlexer
             // double-quoted string
             new Rule(['mu'], '"(\\\\["]|[^"])*"', function () {
                 $this->strip(1, 2);
-                $this->replace('/\\\\"/', '"');
+                $this->yytext = str_replace('\\"', '"', $this->yytext);
                 return self::T_STRING;
             }),
             // single quoted string
             new Rule(['mu'], "'(\\\\[']|[^'])*'", function () {
                 $this->strip(1, 2);
-                $this->replace("/\\\\'/", "'");
+                $this->yytext = str_replace("\\'", "'", $this->yytext);
                 return self::T_STRING;
             }),
             new Rule(['mu'], '@', fn() => self::T_DATA),
