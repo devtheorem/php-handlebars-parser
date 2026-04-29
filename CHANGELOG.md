@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1.1] Short Circuit - 2026-04-29
+
+### Changed
+- Optimized lexer and whitespace control by avoiding unnecessary function calls.
+- Excluded the internal grammar directory from package exports.
+
+
 ## [2.1.0] Uncontrolled Space - 2026-04-26
 
 ### Added
@@ -64,6 +71,7 @@ In this release, parsing a complex, 13 KB Handlebars template is now about 30x f
 The full Handlebars.js grammar, whitespace control, and parse error handling is now implemented in native PHP.
 
 
+[2.1.1]: https://github.com/devtheorem/php-handlebars-parser/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/devtheorem/php-handlebars-parser/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/devtheorem/php-handlebars-parser/compare/v1.1.2...v2.0.0
 [1.1.2]: https://github.com/devtheorem/php-handlebars-parser/compare/v1.1.1...v1.1.2
