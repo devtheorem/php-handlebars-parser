@@ -1,9 +1,13 @@
 <?php
 
-/**
+/*
  * Code based on https://github.com/nikic/PHP-Parser/blob/master/grammar/rebuildParsers.php
  * by Nikita Popov.
  */
+
+if (!isset($argv)) {
+    exit("This script must be run from the command line");
+}
 
 const LIB = '(?(DEFINE)
     (?<singleQuotedString>\'[^\\\\\']*+(?:\\\\.[^\\\\\']*+)*+\')
@@ -14,10 +18,10 @@ const LIB = '(?(DEFINE)
 )';
 
 const PARAMS = '\[(?<params>[^[\]]*+(?:\[(?&params)\][^[\]]*+)*+)\]';
-const ARGS   = '\((?<args>[^()]*+(?:\((?&args)\)[^()]*+)*+)\)';
+const ARGS = '\((?<args>[^()]*+(?:\((?&args)\)[^()]*+)*+)\)';
 
-$grammarFile    = __DIR__ . '/handlebars.y';
-$skeletonFile   = __DIR__ . '/parser.template';
+$grammarFile = __DIR__ . '/handlebars.y';
+$skeletonFile = __DIR__ . '/parser.template';
 $tmpGrammarFile = __DIR__ . '/tmp_parser.phpy';
 $resultDir = __DIR__ . '/../src';
 $kmyacc = __DIR__ . '/../vendor/bin/phpyacc';
@@ -29,6 +33,10 @@ $additionalArgs = $optionDebug ? '-t -v' : '';
 echo "Building Handlebars parser.\n";
 
 $grammarCode = file_get_contents($grammarFile);
+if ($grammarCode === false) {
+    exit("Failed to load $grammarFile");
+}
+
 $grammarCode = preprocessGrammar($grammarCode);
 file_put_contents($tmpGrammarFile, $grammarCode);
 
@@ -39,7 +47,7 @@ unlink($tmpGrammarFile);
 
 function execCmd(string $cmd): string
 {
-    $output = trim(shell_exec("$cmd 2>&1") ?? '');
+    $output = trim(shell_exec("$cmd 2>&1") ?: '');
     if ($output !== "") {
         echo "> " . $cmd . "\n";
         echo $output;
@@ -51,14 +59,15 @@ function preprocessGrammar(string $code): string
 {
     $code = resolveMacros($code);
     $code = resolveStackAccess($code);
-    $code = str_replace('$this', '$self', $code);
-    return $code;
+    return str_replace('$this', '$self', $code);
 }
 
 function resolveStackAccess(string $code): string
 {
-    $code = preg_replace('/\$\d+/', '$this->semStack[$0]', $code);
-    return preg_replace('/#(\d+)/', '$$1', $code);
+    $code = preg_replace('/\$\d+/', '$this->semStack[$0]', $code)
+        ?? throw new Exception('Failed to replace pattern with $this->semStack[$0]');
+    return preg_replace('/#(\d+)/', '$$1', $code)
+        ?? throw new Exception('Failed to replace pattern with $$1');
 }
 
 function resolveMacros(string $code): string
@@ -72,7 +81,7 @@ function resolveMacros(string $code): string
             $name = $matches['name'];
             $args = magicSplit(
                 '(?:' . PARAMS . '|' . ARGS . ')(*SKIP)(*FAIL)|,',
-                $matches['args']
+                $matches['args'],
             );
 
             if ('locInfo' === $name) {
@@ -98,10 +107,14 @@ function resolveMacros(string $code): string
 
             return $matches[0];
         },
-        $code
-    );
+        $code,
+    )
+        ?? throw new Exception('Failed to replace pattern with callback');
 }
 
+/**
+ * @param list<string> $args
+ */
 function assertArgs(int $num, array $args, string $name): void
 {
     if ($num !== count($args)) {
@@ -114,9 +127,16 @@ function regex(string $regex): string
     return '~' . LIB . '(?:' . str_replace('~', '\~', $regex) . ')~';
 }
 
+/**
+ * @return list<string>
+ */
 function magicSplit(string $regex, string $string): array
 {
     $pieces = preg_split(regex('(?:(?&string)|(?&comment)|(?&code))(*SKIP)(*FAIL)|' . $regex), $string);
+
+    if ($pieces === false) {
+        throw new Exception("Failed to split string $string");
+    }
 
     foreach ($pieces as &$piece) {
         $piece = trim($piece);

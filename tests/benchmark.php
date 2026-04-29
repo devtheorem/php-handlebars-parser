@@ -33,13 +33,11 @@ for ($i = 0; $i < $iterations; $i++) {
 }
 
 $elapsed = (hrtime(true) - $start) / 1e9;
-$perParse = $elapsed / $iterations * 1000;
-$templateBytes = strlen($template);
+$peakMemory = memory_get_peak_usage();
 
 printf(
-    "Parsed %d times in %.3f s  |  %.3f ms/parse  |  %.1f KB template\n",
+    "Parsed %d times  |  %.2f ms/parse  |  %.1f MB peak memory\n",
     $iterations,
-    $elapsed,
-    $perParse,
-    $templateBytes / 1024,
+    $elapsed / $iterations * 1000,
+    $peakMemory / 1024 / 1024,
 );

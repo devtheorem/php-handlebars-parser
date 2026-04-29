@@ -2,6 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->path([
+        'grammar/',
         'src/',
         'tests/',
     ])
