@@ -306,8 +306,11 @@ class WhitespaceControl
         }
 
         $original = $current->value;
-        $pattern = $multiple ? '/^\s+/' : '/^[ \t]*\r?\n?/';
-        $current->value = preg_replace($pattern, '', $current->value) ?? '';
+        if ($multiple) {
+            $current->value = ltrim($original);
+        } else {
+            $current->value = preg_replace('/^[ \t]*\r?\n?/', '', $original) ?? '';
+        }
         $current->rightStripped = ($current->value !== $original);
     }
 
@@ -335,8 +338,7 @@ class WhitespaceControl
 
         // We omit the last node if it's whitespace only and not preceded by a non-content node.
         $original = $current->value;
-        $pattern = $multiple ? '/\s+$/' : '/[ \t]+$/';
-        $current->value = preg_replace($pattern, '', $current->value) ?? '';
+        $current->value = $multiple ? rtrim($original) : rtrim($original, " \t");
         $current->leftStripped = ($current->value !== $original);
 
         return $current->leftStripped;
